@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import static org.junit.Assert.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -11,33 +12,32 @@ import static org.junit.Assert.assertEquals;
  * Created by blumenra on 12/12/16.
  */
 public class DeferredTest {
-//    @Test
-//    public void get() throws Exception {
-//
-//        Deferred<int[]> deferred = new Deferred<int[]>();
-//        int[] ints = {2, 1};
-//
-//        deferred.resolve(ints);
-//
-//        int[] expectedResult = {1, 2};
-//
-//        assertArrayEquals("should be [1, 2] result", expectedResult, deferred.get());
-//
-//    }
+    @Test
+    public void get() throws Exception {
 
-//    @Test
-//    public void isResolved() throws Exception {
-//
-//        Deferred<int[]> deferred = new Deferred<int[]>();
-//        int[] ints = new int[10];
-//
-//        assertFalse("isResolved should be false before resolve", deferred.isResolved());
-//
-//        deferred.resolve(ints);
-//
-//        assertTrue("isResolved should be true after resolve", deferred.isResolved());
-//
-//    }
+        Deferred<int[]> deferred = new Deferred<int[]>();
+        int[] ints = {2, 1};
+
+        deferred.resolve(ints);
+
+        int[] expectedResult = {1, 2};
+
+        assertArrayEquals("should be [1, 2] result", expectedResult, deferred.get());
+    }
+
+    @Test
+    public void isResolved() throws Exception {
+
+        Deferred<int[]> deferred = new Deferred<int[]>();
+        int[] ints = new int[10];
+
+        assertFalse("isResolved should be false before resolve", deferred.isResolved());
+
+        deferred.resolve(ints);
+
+        assertTrue("isResolved should be true after resolve", deferred.isResolved());
+
+    }
 
     @Test
     public void resolve() throws Exception {
