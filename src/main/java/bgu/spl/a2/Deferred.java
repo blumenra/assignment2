@@ -1,5 +1,8 @@
 package bgu.spl.a2;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  * this class represents a deferred result i.e., an object that eventually will
  * be resolved to hold a result of some operation, the class allows for getting
@@ -15,6 +18,8 @@ package bgu.spl.a2;
  * @param <T> the result type
  */
 public class Deferred<T> {
+
+    private List<Runnable> callbacks = new CopyOnWriteArrayList<>();
 
     /**
      *
@@ -51,8 +56,15 @@ public class Deferred<T> {
      * resolved
      */
     public void resolve(T value) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        while(!callbacks.isEmpty()){
+            Runnable callbalck = callbacks.get(0);
+            callbacks.remove(0);
+            callbalck.run();
+        }
+
+//        //TODO: replace method body with real implementation
+//        throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
     /**
@@ -69,8 +81,11 @@ public class Deferred<T> {
      * resolved
      */
     public void whenResolved(Runnable callback) {
+
+        this.callbacks.add(callback);
+
         //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+//        throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
 }
