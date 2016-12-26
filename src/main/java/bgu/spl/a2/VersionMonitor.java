@@ -25,25 +25,18 @@ public class VersionMonitor {
     public int getVersion() {
 
         return version.get();
-
-//        //TODO: replace method body with real implementation
-//        throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
-    public void inc() {
+    public synchronized void inc() {
 
         this.version.addAndGet(1);
-//        //TODO: replace method body with real implementation
-//        throw new UnsupportedOperationException("Not Implemented Yet.");
+        this.notifyAll();
     }
 
-    public void await(int version) throws InterruptedException {
+    public synchronized void await(int version) throws InterruptedException {
 
             while(version == this.version.get()){
-                Thread.sleep(500);
+                this.wait();
             }
-
-//        //TODO: replace method body with real implementation
-//        throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 }

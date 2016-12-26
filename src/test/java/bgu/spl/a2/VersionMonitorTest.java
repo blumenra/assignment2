@@ -52,11 +52,6 @@ public class VersionMonitorTest {
             public void run() {
 
                 vm.inc();
-                try {
-                    t1.join();
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
             }
         };
 
