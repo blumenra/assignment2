@@ -1,5 +1,8 @@
 package bgu.spl.a2;
 
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 /**
  * represents a work stealing thread pool - to understand what this class does
  * please refer to your assignment.
@@ -11,6 +14,8 @@ package bgu.spl.a2;
  * methods
  */
 public class WorkStealingThreadPool {
+
+    ArrayList<ConcurrentLinkedDeque<Task<?>>> dequesOfProcessors;
 
     /**
      * creates a {@link WorkStealingThreadPool} which has nthreads
@@ -25,8 +30,16 @@ public class WorkStealingThreadPool {
      * thread pool
      */
     public WorkStealingThreadPool(int nthreads) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        this.dequesOfProcessors = new ArrayList<ConcurrentLinkedDeque<Task<?>>>();
+
+        for(int i = 0; i < nthreads; i++){
+
+            this.dequesOfProcessors.add(new ConcurrentLinkedDeque<Task<?>>());
+        }
+
+//        //TODO: replace method body with real implementation
+//        throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
     /**
