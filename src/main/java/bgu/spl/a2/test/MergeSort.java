@@ -25,7 +25,7 @@ public class MergeSort extends Task<int[]> {
 
     @Override
     protected void start() { //TODO: change back to this original line instead of the one below!!!!!
-//    public void start() {//TODO: REMOVE MEEEEEEEEEEEEEEEEEEEE
+//    public void start() {//TODO: REMOVE MEEEEEEEEEEEEEEEEEEE
 
         if(array.length ==1){
 
