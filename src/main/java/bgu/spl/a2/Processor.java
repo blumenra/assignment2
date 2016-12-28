@@ -1,5 +1,6 @@
 package bgu.spl.a2;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -17,7 +18,6 @@ public class Processor implements Runnable {
 
     private final WorkStealingThreadPool pool;
     private final int id;
-    private boolean interrupted = false;
 
     /**
      * constructor for this class
@@ -43,7 +43,7 @@ public class Processor implements Runnable {
     @Override
     public void run() {
 
-        while(!interrupted){ //TODO: The condition is not determinde yet!!!
+        while(!Thread.currentThread().isInterrupted()){
             while(pool.getDeque(id).isEmpty()) {
 
                 if(!steal()){
@@ -52,22 +52,26 @@ public class Processor implements Runnable {
                     try {
                         pool.getVersionMonitor().await(currentVersion);
                     } catch (InterruptedException e) {
-//                        e.printStackTrace();
-                        interrupted = true;
+
+                        Thread.currentThread().interrupt();
                         break;
-//                        pool.getLatch().countDown();
                     }
 
                 }
             }
 
-            if(!interrupted) {
+            if(!Thread.currentThread().isInterrupted()) {
 
-                pool.getDeque(id).removeFirst().handle(this);
+                try {
+
+                    pool.getDeque(id).removeFirst().handle(this);
+                } catch(NoSuchElementException e) {
+
+                }
             }
         }
 
-        System.out.println("interrupted out of run: " + id);
+//        System.out.println("interrupted out of run: " + id);//TODO:REMOVE ME
 
         pool.getLatch().countDown();
     }
