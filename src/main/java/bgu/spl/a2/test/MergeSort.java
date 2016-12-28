@@ -45,16 +45,9 @@ public class MergeSort extends Task<int[]> {
             spawn(task0, task1);
 
             whenResolved(tasks, () -> {
-                // TODO: REMOVE  HERE
-                System.out.println("entered whenResolved");
+
                 int[] resultOfTask0 = tasks.get(0).getResult().get();
                 int[] resultOfTask1 = tasks.get(1).getResult().get();
-
-                // TODO: REMOVE FROM HERE
-                System.out.println("size of task0: " + resultOfTask0.length);
-                System.out.println("size of task1: " + resultOfTask1.length);
-                // TODO: REMOVE TO HERE
-
                 int[] mergedArray = merge(resultOfTask0, resultOfTask1);
 
                 complete(mergedArray);
@@ -159,7 +152,7 @@ public class MergeSort extends Task<int[]> {
 
         // TODO: REMOVE FROM HERE
         long  start = System.currentTimeMillis();
-        WorkStealingThreadPool pool = new WorkStealingThreadPool(2);
+        WorkStealingThreadPool pool = new WorkStealingThreadPool(6);
         int n = 1000000;
         // TODO: REMOVE TO HERE AND UNCOMMENT THE TWO LINES BELOW
 

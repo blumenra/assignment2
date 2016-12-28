@@ -1,5 +1,7 @@
 package bgu.spl.a2;
 
+import java.util.concurrent.CountDownLatch;
+
 /**
  * this class represents a single work stealing processor, it is
  * {@link Runnable} so it is suitable to be executed by threads.
@@ -15,7 +17,7 @@ public class Processor implements Runnable {
 
     private final WorkStealingThreadPool pool;
     private final int id;
-
+    private boolean interrupted = false;
 
     /**
      * constructor for this class
@@ -41,9 +43,7 @@ public class Processor implements Runnable {
     @Override
     public void run() {
 
-        while(true){ //TODO: The condition is not determinde yet!!!
-
-            System.out.println(id);
+        while(!interrupted){ //TODO: The condition is not determinde yet!!!
             while(pool.getDeque(id).isEmpty()) {
 
                 if(!steal()){
@@ -52,13 +52,24 @@ public class Processor implements Runnable {
                     try {
                         pool.getVersionMonitor().await(currentVersion);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+//                        e.printStackTrace();
+                        interrupted = true;
+                        break;
+//                        pool.getLatch().countDown();
                     }
+
                 }
             }
 
-            pool.getDeque(id).removeFirst().handle(this);
+            if(!interrupted) {
+
+                pool.getDeque(id).removeFirst().handle(this);
+            }
         }
+
+        System.out.println("interrupted out of run: " + id);
+
+        pool.getLatch().countDown();
     }
 
     private boolean steal() {
@@ -97,4 +108,5 @@ public class Processor implements Runnable {
         pool.getDeque(id).addFirst(task);
         pool.getVersionMonitor().inc();
     }
+
 }

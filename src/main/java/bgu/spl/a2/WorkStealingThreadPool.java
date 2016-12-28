@@ -2,6 +2,7 @@ package bgu.spl.a2;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,8 +19,10 @@ import java.util.concurrent.Executors;
 public class WorkStealingThreadPool {
 
     private ArrayList<ConcurrentLinkedDeque<Task<?>>> dequesOfProcessors;
-    private ExecutorService processors = null;
+//    private ExecutorService processors = null;
+    private ArrayList<Thread> tProcessors;
     private VersionMonitor vm;
+    private CountDownLatch latch;
 
     /**
      * creates a {@link WorkStealingThreadPool} which has nthreads
@@ -43,7 +46,10 @@ public class WorkStealingThreadPool {
         }
 
         vm = new VersionMonitor();
-        processors = Executors.newFixedThreadPool(nthreads);
+        tProcessors = new ArrayList<>();
+//        processors = Executors.newFixedThreadPool(nthreads);
+
+        this.latch = new CountDownLatch(dequesOfProcessors.size());
     }
 
     /**
@@ -72,7 +78,14 @@ public class WorkStealingThreadPool {
      */
     public void shutdown() throws InterruptedException {
 
-        processors.shutdown();
+//        processors.shutdown();
+        for(Thread t : tProcessors) {
+            t.interrupt();
+        }
+        latch.await();
+        for(Thread t : tProcessors) {
+            System.out.println(t.getName() + " is alive: " + t.isAlive());
+        }
     }
 
     /**
@@ -82,9 +95,13 @@ public class WorkStealingThreadPool {
 
         for(int i = 0; i < dequesOfProcessors.size(); i++) {
             Processor processor = new Processor(i, this);
-            Thread t = new Thread(processor);
-            processors.submit(t);
+            Thread thread = new Thread(processor);
+            thread.start();
+            tProcessors.add(thread);
+
+//            processors.submit(t);
         }
+
     }
 
     /*package*/ ArrayList<ConcurrentLinkedDeque<Task<?>>> getDeques() {
@@ -100,5 +117,9 @@ public class WorkStealingThreadPool {
     /*package*/ ConcurrentLinkedDeque<Task<?>> getDeque(int i) {
 
         return dequesOfProcessors.get(i);
+    }
+
+    public CountDownLatch getLatch() {
+        return latch;
     }
 }

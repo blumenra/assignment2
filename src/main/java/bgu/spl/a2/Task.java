@@ -1,6 +1,7 @@
 package bgu.spl.a2;
 
 import java.util.Collection;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -85,6 +86,7 @@ public abstract class Task<R> {
      * @param callback the callback to execute once all the results are resolved
      */
     protected final void whenResolved(Collection<? extends Task<?>> tasks, Runnable callback) {
+
         this.myCallback = callback;
         this.readyToComplete = true;
         this.myVM = new AtomicInteger(tasks.size());
@@ -97,29 +99,30 @@ public abstract class Task<R> {
             @Override
             public void run() {
 
-//                synchronized(parentVM){
+                synchronized(parentVM){ //TODO: MAYBE NOT NEEDED!
 
                     if(parentVM.decrementAndGet() == 0) {
 
-                        // callback.run();
+                        // callback.run();//TODO: REMOVE ME IF NECESSARY
                         spawn(parentTask);
                     }
-                System.out.println("vm: " + parentVM.get());
-//                }
+                }
             }
         };
 
         for(Task<?> task : tasks) {
 
-            if(task.getResult().isResolved()) {
+            synchronized(task.getResult()) {
 
-                callbackForChild.run();
+                if(task.getResult().isResolved()) {
+
+                    callbackForChild.run();
+                }
+                else {
+
+                    task.getResult().whenResolved(callbackForChild);
+                }
             }
-            else {
-
-                task.getResult().whenResolved(callbackForChild);
-            }
-
         }
     }
 
@@ -130,6 +133,7 @@ public abstract class Task<R> {
      * @param result - the task calculated result
      */
     protected final void complete(R result) {
+
 
         deferred.resolve(result);
     }

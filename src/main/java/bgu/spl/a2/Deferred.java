@@ -62,7 +62,15 @@ public class Deferred<T> {
      * @throws IllegalStateException in the case where this object is already
      * resolved
      */
-    public void resolve(T value) {
+
+    /**
+     * This function must be synchronized so that when a parent asks a child if he is resolved,
+     * if it is false it will stay false until the parent task adds his callback to the child.
+     * This also prevents the child from being in the middle of executing resolve
+     * while the parent is trying to add the callback.
+     * @param value
+     */
+    public synchronized void resolve(T value) {
 
         this.result = value;
 
