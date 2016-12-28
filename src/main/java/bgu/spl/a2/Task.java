@@ -1,6 +1,7 @@
 package bgu.spl.a2;
 
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * an abstract class that represents a task that may be executed using the
@@ -14,6 +15,14 @@ import java.util.Collection;
  * @param <R> the task result type
  */
 public abstract class Task<R> {
+
+    private Processor processor;
+    private int target;
+    private AtomicInteger myVM = new AtomicInteger();
+    private boolean readyToComplete = false;
+    private Runnable myCallback;
+    private Collection<? extends Task<?>> tasks;
+    private Deferred deferred = new Deferred();
 
     /**
      * start handling the task - note that this method is protected, a handler
@@ -38,8 +47,17 @@ public abstract class Task<R> {
      * @param handler the handler that wants to handle the task
      */
     /*package*/ final void handle(Processor handler) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        this.processor = handler;
+
+        if(readyToComplete) {
+
+            myCallback.run();
+        }
+        else {
+
+            start();
+        }
     }
 
     /**
@@ -49,8 +67,11 @@ public abstract class Task<R> {
      * @param task the task to execute
      */
     protected final void spawn(Task<?>... task) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        for(Task<?> tempTask : task) {
+
+            processor.addToMyDeque(tempTask);
+        }
     }
 
     /**
@@ -64,8 +85,42 @@ public abstract class Task<R> {
      * @param callback the callback to execute once all the results are resolved
      */
     protected final void whenResolved(Collection<? extends Task<?>> tasks, Runnable callback) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+        this.myCallback = callback;
+        this.readyToComplete = true;
+        this.myVM = new AtomicInteger(tasks.size());
+
+        AtomicInteger parentVM = this.myVM;
+        Task<?> parentTask = this;
+
+        Runnable callbackForChild = new Runnable() {
+
+            @Override
+            public void run() {
+
+//                synchronized(parentVM){
+
+                    if(parentVM.decrementAndGet() == 0) {
+
+                        // callback.run();
+                        spawn(parentTask);
+                    }
+                System.out.println("vm: " + parentVM.get());
+//                }
+            }
+        };
+
+        for(Task<?> task : tasks) {
+
+            if(task.getResult().isResolved()) {
+
+                callbackForChild.run();
+            }
+            else {
+
+                task.getResult().whenResolved(callbackForChild);
+            }
+
+        }
     }
 
     /**
@@ -75,16 +130,16 @@ public abstract class Task<R> {
      * @param result - the task calculated result
      */
     protected final void complete(R result) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        deferred.resolve(result);
     }
 
     /**
      * @return this task deferred result
      */
     public final Deferred<R> getResult() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        return this.deferred;
     }
 
 }

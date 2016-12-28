@@ -2,6 +2,8 @@ package bgu.spl.a2;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * represents a work stealing thread pool - to understand what this class does
@@ -15,7 +17,9 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  */
 public class WorkStealingThreadPool {
 
-    ArrayList<ConcurrentLinkedDeque<Task<?>>> dequesOfProcessors;
+    private ArrayList<ConcurrentLinkedDeque<Task<?>>> dequesOfProcessors;
+    private ExecutorService processors = null;
+    private VersionMonitor vm;
 
     /**
      * creates a {@link WorkStealingThreadPool} which has nthreads
@@ -38,8 +42,8 @@ public class WorkStealingThreadPool {
             this.dequesOfProcessors.add(new ConcurrentLinkedDeque<Task<?>>());
         }
 
-//        //TODO: replace method body with real implementation
-//        throw new UnsupportedOperationException("Not Implemented Yet.");
+        vm = new VersionMonitor();
+        processors = Executors.newFixedThreadPool(nthreads);
     }
 
     /**
@@ -48,8 +52,10 @@ public class WorkStealingThreadPool {
      * @param task the task to execute
      */
     public void submit(Task<?> task) {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        int randomNumber = (int) ((Math.random())*(dequesOfProcessors.size()));
+        this.dequesOfProcessors.get(randomNumber).addLast(task);
+        vm.inc();
     }
 
     /**
@@ -65,16 +71,34 @@ public class WorkStealingThreadPool {
      * shutdown the queue is itself a processor of this queue
      */
     public void shutdown() throws InterruptedException {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        processors.shutdown();
     }
 
     /**
      * start the threads belongs to this thread pool
      */
     public void start() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        for(int i = 0; i < dequesOfProcessors.size(); i++) {
+            Processor processor = new Processor(i, this);
+            Thread t = new Thread(processor);
+            processors.submit(t);
+        }
     }
 
+    /*package*/ ArrayList<ConcurrentLinkedDeque<Task<?>>> getDeques() {
+
+        return dequesOfProcessors;
+    }
+
+    /*package*/ VersionMonitor getVersionMonitor() {
+
+        return vm;
+    }
+
+    /*package*/ ConcurrentLinkedDeque<Task<?>> getDeque(int i) {
+
+        return dequesOfProcessors.get(i);
+    }
 }

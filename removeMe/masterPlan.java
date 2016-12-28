@@ -29,7 +29,7 @@ public class WorkStealingThreadPool{
 
 	            this.dequesOfProcessors.add(new ConcurrentLinkedDeque<Task<?>>());
 	        }
-			processors = Executor.newFixedThreadPool(nthreads);
+			processors = Executors.newFixedThreadPool(nthreads);
 		}
 
 	methods:
@@ -247,10 +247,13 @@ public abstract class Task<R> {
                 @Override
                 void run() {
 
-                    if(parentVM.decrementAndGet() == 0) {
+                    synchronize(parentVM) {
 
-                        // callback.run();
-                        spawn(parentTask);
+                        if(parentVM.decrementAndGet() == 0) {
+
+                            // callback.run();
+                            spawn(parentTask);
+                        }
                     }
                 }
             };
@@ -367,8 +370,6 @@ public class Deferred<T> {
             tmpCallback.run();
         }
 
-//        //TODO: replace method body with real implementation
-//        throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
     /**

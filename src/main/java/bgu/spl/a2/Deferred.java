@@ -1,5 +1,6 @@
 package bgu.spl.a2;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -19,7 +20,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class Deferred<T> {
 
-    private List<Runnable> callbacks = new CopyOnWriteArrayList<>();
+//    private List<Runnable> callbacks = new CopyOnWriteArrayList<>();
+    private ArrayList<Runnable> callbacks = new ArrayList<>();
+    private T result = null;
 
     /**
      *
@@ -29,8 +32,12 @@ public class Deferred<T> {
      * this object is not yet resolved
      */
     public T get() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        if(isResolved()) {
+            return result;
+        }
+
+        throw new IllegalStateException("The object is not yet resolved");
     }
 
     /**
@@ -39,8 +46,8 @@ public class Deferred<T> {
      * {@link #resolve(java.lang.Object)} has been called on this object before.
      */
     public boolean isResolved() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        return result != null;
     }
 
     /**
@@ -57,14 +64,14 @@ public class Deferred<T> {
      */
     public void resolve(T value) {
 
-        while(!callbacks.isEmpty()){
-            Runnable callbalck = callbacks.get(0);
-            callbacks.remove(0);
-            callbalck.run();
-        }
+        this.result = value;
 
-//        //TODO: replace method body with real implementation
-//        throw new UnsupportedOperationException("Not Implemented Yet.");
+        // not sure if it is better to run over the list and execute each callback, or to do it as follows...
+        while(!callbacks.isEmpty()){
+            Runnable tmpCallback = callbacks.get(0);
+            callbacks.remove(0);
+            tmpCallback.run();
+        }
     }
 
     /**
@@ -83,9 +90,6 @@ public class Deferred<T> {
     public void whenResolved(Runnable callback) {
 
         this.callbacks.add(callback);
-
-        //TODO: replace method body with real implementation
-//        throw new UnsupportedOperationException("Not Implemented Yet.");
     }
 
 }

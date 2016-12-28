@@ -16,6 +16,7 @@ public class Processor implements Runnable {
     private final WorkStealingThreadPool pool;
     private final int id;
 
+
     /**
      * constructor for this class
      *
@@ -39,8 +40,61 @@ public class Processor implements Runnable {
 
     @Override
     public void run() {
-        //TODO: replace method body with real implementation
-        throw new UnsupportedOperationException("Not Implemented Yet.");
+
+        while(true){ //TODO: The condition is not determinde yet!!!
+
+            System.out.println(id);
+            while(pool.getDeque(id).isEmpty()) {
+
+                if(!steal()){
+
+                    int currentVersion = pool.getVersionMonitor().getVersion();
+                    try {
+                        pool.getVersionMonitor().await(currentVersion);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            pool.getDeque(id).removeFirst().handle(this);
+        }
     }
 
+    private boolean steal() {
+
+        int nthreads = pool.getDeques().size(); // number of processors
+
+        for(int i = (id+1)%nthreads; i != id; i = (i+1) % nthreads) {
+
+            int numOfTasks = pool.getDeque(i).size();
+
+            Task<?> tempTask;
+
+            for(int j = 0; j < numOfTasks/2; j++) {
+
+                tempTask = pool.getDeque(i).pollLast();
+                if(tempTask != null) {
+
+                    // pool.getDeque(id).addFirst(tempTask); //maybe its better with this line instead of the next but could not justify it...
+                    addToMyDeque(tempTask);
+                }
+            }
+
+            if(!pool.getDeque(id).isEmpty()){
+
+                break;
+            }
+
+        }
+
+        return !pool.getDeque(id).isEmpty();
+    }
+
+    //This method is package protected so it's ok to be defined nanabanana
+    /*package*/ void addToMyDeque(Task<?> task) {
+
+        pool.getDeque(id).addFirst(task);
+        pool.getVersionMonitor().inc();
+    }
 }
