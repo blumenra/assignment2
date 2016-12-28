@@ -152,7 +152,7 @@ public class MergeSort extends Task<int[]> {
 
         // TODO: REMOVE FROM HERE
         long  start = System.currentTimeMillis();
-        WorkStealingThreadPool pool = new WorkStealingThreadPool(6);
+        WorkStealingThreadPool pool = new WorkStealingThreadPool(13);
         int n = 1000000;
         // TODO: REMOVE TO HERE AND UNCOMMENT THE TWO LINES BELOW
 
@@ -168,7 +168,7 @@ public class MergeSort extends Task<int[]> {
         pool.submit(task);
         task.getResult().whenResolved(() -> {
             //warning - a large print!! - you can remove this line if you wish
-            System.out.println(Arrays.toString(task.getResult().get()));
+//            System.out.println(Arrays.toString(task.getResult().get()));//TODO: UNCOMMENT IT!!!!
 
             ////////////////TODO: REMOVE FROM HERE
 
