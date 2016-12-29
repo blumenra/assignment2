@@ -1,12 +1,12 @@
 /*TODO:
 		implement JSON
-		create classes for all our tasks
 		implement the Simulator
 		create tool classes
 		check everything in Terminal with Maven
 		handle all the TODOs in the code
 		remove all souts (has a keyboard shortcut in the tips)
 		remove unused imports, variables any anything else unused in the code (has a keyboard shortcut in the tips)
+		--create classes for all our tasks
 
 */
 
