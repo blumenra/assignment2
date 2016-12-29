@@ -39,11 +39,6 @@ public class Simulator {
 		}
 }
 
-public class Warehouse {
-
-
-}
-
 //************Tasks
 public class Wave extends Task<Queue<Product>> {
 
