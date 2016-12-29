@@ -1,3 +1,20 @@
+/*TODO:
+		implement JSON
+		create classes for all our tasks
+		implement the Simulator
+		create tool classes
+		check everything in Terminal with Maven
+		handle all the TODOs in the code
+		remove all souts (has a keyboard shortcut in the tips)
+		remove unused imports, variables any anything else unused in the code (has a keyboard shortcut in the tips)
+
+*/
+
+
+
+
+
+
 import bgu.spl.a2.sim.*;
 import bgu.spl.a2;
 
@@ -73,14 +90,14 @@ public class Wave extends Task<Queue<Product>> {
 public class Manufacture extends Task<Product> {
 
 	Fields:
-		private final String product;
+		private final String productName;
 		private final int startId;
 		private final Warehouse warehouse;
 
 	Methods:
 		public Manufacture(String product, int startId, Warehouse warehouse) {
 
-			this.product = product;
+			this.productName = product;
 			this.startId = startId;
 			this.warehouse = warehouse;
 		}
@@ -88,7 +105,7 @@ public class Manufacture extends Task<Product> {
 		@Override
 		protected void start() {
 
-			ManufactoringPlan plan = warehouse.getPlan(product);
+			ManufactoringPlan plan = warehouse.getPlan(productName);
 			List<Task<Product>> tasks = new ArrayList<>();
 
 			for(String part : plan.getParts()){
@@ -125,8 +142,8 @@ public class Manufacture extends Task<Product> {
 						sum += toolTask.getResult().get();
 					}
 
-					Product product = new Product(sum, this.product);
-
+					Product product = new Product(this.startId, this.productName);
+					product.setFinalId(sum);
 					complete(product);
 				});
 
