@@ -1,6 +1,3 @@
-import bgu.spl.a2.sim.*;
-import bgu.spl.a2;
-
 public class Simulator {
 
 	Fields:
@@ -20,11 +17,6 @@ public class Simulator {
 		public static int main(String [] args){
 
 		}
-}
-
-public class Warehouse {
-
-
 }
 
 //************Tasks
