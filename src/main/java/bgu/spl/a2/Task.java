@@ -18,11 +18,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class Task<R> {
 
     private Processor processor;
-    private int target;
     private AtomicInteger myVM = new AtomicInteger();
     private boolean readyToComplete = false;
     private Runnable myCallback;
-    private Collection<? extends Task<?>> tasks;
     private Deferred deferred = new Deferred();
 
     /**
@@ -94,18 +92,14 @@ public abstract class Task<R> {
         AtomicInteger parentVM = this.myVM;
         Task<?> parentTask = this;
 
-        Runnable callbackForChild = new Runnable() {
+        Runnable callbackForChild = () -> {
 
-            @Override
-            public void run() {
+            synchronized(parentVM){ //TODO: MAYBE NOT NEEDED!
 
-                synchronized(parentVM){ //TODO: MAYBE NOT NEEDED!
+                if(parentVM.decrementAndGet() == 0) {
 
-                    if(parentVM.decrementAndGet() == 0) {
-
-                        // callback.run();//TODO: REMOVE ME IF NECESSARY
-                        spawn(parentTask);
-                    }
+                    // callback.run();//TODO: REMOVE ME IF NECESSARY
+                    spawn(parentTask);
                 }
             }
         };
