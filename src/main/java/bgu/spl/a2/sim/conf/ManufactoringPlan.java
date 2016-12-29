@@ -10,20 +10,38 @@ public class ManufactoringPlan {
 	* @param parts - array of strings describing the plans part names
 	* @param tools - array of strings describing the plans tools names
 	*/
-    public ManufactoringPlan(String product, String[] parts, String[] tools);
+	private final String product;
+	private String[] parts;
+	private String[] tools;
+
+    public ManufactoringPlan(String product, String[] parts, String[] tools){
+
+    	this.product = product;
+    	this.parts = parts;
+    	this.tools = tools;
+	}
 
 	/**
 	* @return array of strings describing the plans part names
 	*/
-    public String[] getParts();
+    public String[] getParts(){
+
+    	return parts;
+	}
 
 	/**
 	* @return string containing product name
 	*/
-    public String getProductName();
+    public String getProductName(){
+
+    	return product;
+	}
 	/**
 	* @return array of strings describing the plans tools names
 	*/
-    public String[] getTools();
+    public String[] getTools(){
+
+    	return tools;
+	}
 
 }
