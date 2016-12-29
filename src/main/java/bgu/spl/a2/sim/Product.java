@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * A class that represents a product produced during the simulation.
  */
-public class Product {
+public class Product implements java.o.Serializable {
 	/**
 	* Constructor 
 	* @param startId - Product start id
