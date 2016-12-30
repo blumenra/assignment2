@@ -120,9 +120,11 @@ public class Simulator {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(fout);
 			oos.writeObject(finishedProducts);
+			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 
 	}
 }
