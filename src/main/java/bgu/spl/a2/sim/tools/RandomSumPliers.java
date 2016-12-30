@@ -2,28 +2,36 @@ package bgu.spl.a2.sim.tools;
 
 import bgu.spl.a2.sim.Product;
 
+import java.util.Random;
+
 /**
  * Created by blumenra on 12/29/16.
  */
 public class RandomSumPliers implements Tool {
 
-    private final String type;
+	private final String type;
 
-    public RandomSumPliers() {
-        this.type = "rs-pliers";
-    }
+	public RandomSumPliers() {
+		this.type = "rs-pliers";
+	}
 
-    public String getType() {
+	public String getType() {
 
-        return type;
-    }
+		return type;
+	}
 
-    public long useOn(Product p) {
+	public long useOn(Product p) {
 
-        long ans = 0;
+		long id = p.getFinalId();
 
-        //TODO: implement randomSum algorithm and use it on p
+        Random r = new Random(id);
+        long  sum = 0;
 
-        return ans;
-    }
+        for (long i = 0; i < id % 10000; i++) {
+
+            sum += r.nextInt();
+        }
+
+        return sum;
+	}
 }
