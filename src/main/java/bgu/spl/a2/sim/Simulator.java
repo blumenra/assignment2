@@ -22,16 +22,15 @@ import java.util.concurrent.CountDownLatch;
  */
 public class Simulator {
 
-	private static String fileName;
+	private static WorkStealingThreadPool pool;
+	private static JsonParser jsonParser;
 	/**
 	* Begin the simulation
 	* Should not be called before attachWorkStealingThreadPool()
 	*/
     public static ConcurrentLinkedQueue<Product> start(){
 
-    	JsonParser jsonParser = new JsonParser(fileName);
-
-		WorkStealingThreadPool pool = new WorkStealingThreadPool(jsonParser.getThreads());//TODO: put this here the right way
+		//TODO: put this here the right way
 		pool.start();
 
 		Warehouse warehouse = new Warehouse();//TODO: should this even be here?
@@ -98,15 +97,35 @@ public class Simulator {
 	*/
 	public static void attachWorkStealingThreadPool(WorkStealingThreadPool myWorkStealingThreadPool){
 
+		Simulator.pool = myWorkStealingThreadPool;
+	}
+
+	private static void initializeJsonParser(JsonParser jsonParser){
+
+		Simulator.jsonParser = jsonParser;
 	}
 	
 	public static void main(String [] args){
 
-//		fileName = args[0];//TODO: find out where to get the file name from
 
-		fileName = "simulation.json";//TODO: remove this line
+		String inputFile = args[0];
+
+		JsonParser myJsonParser = new JsonParser(inputFile);
+
+		initializeJsonParser(myJsonParser);
+
+		WorkStealingThreadPool myPool = new WorkStealingThreadPool(jsonParser.getThreads());
+
+		attachWorkStealingThreadPool(myPool);
 
 		ConcurrentLinkedQueue<Product> finishedProducts = start();
+
+		//TODO: remove {
+		for(Product product: finishedProducts){
+			System.out.println("");
+			product.printWithParts("");
+		}
+		//TODO: remove }
 
 		FileOutputStream fout = null;
 		try {
@@ -129,7 +148,7 @@ public class Simulator {
 			ObjectInputStream in = new ObjectInputStream(new FileInputStream("result.ser"));
 			System.out.println("***************************");
 			Object obj = in.readObject();
-//			System.out.println(obj);
+			System.out.println(obj);
 
 
 		} catch (IOException e) {

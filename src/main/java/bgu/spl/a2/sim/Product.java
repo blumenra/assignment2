@@ -72,4 +72,27 @@ public class Product implements java.io.Serializable {
     	this.finalId = finalId;
 	}
 
+	public void printWithParts(String indent){
+
+//		System.out.println(indent + "{");
+//		System.out.println("Name: " + this.getName() + ", StartID: " + this.getStartId() + ", FinalID: " + this.getFinalId());
+		System.out.println(indent + "Name: " + this.getName() + ", FinalID: " + this.getFinalId() + " {");
+
+
+		if(!this.getParts().isEmpty()){
+
+//			System.out.println(indent + this.getName() + " Parts {" );
+
+			for(Product part : this.getParts()){
+
+				String tab = "\t";
+				part.printWithParts(indent + tab);
+			}
+
+//			System.out.println(indent + "}");
+		}
+
+		System.out.println(indent + "}");
+	}
+
 }
