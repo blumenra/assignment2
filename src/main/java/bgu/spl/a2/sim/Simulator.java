@@ -32,11 +32,12 @@ public class Simulator {
 	*/
     public static ConcurrentLinkedQueue<Product> start(){
 
-		WorkStealingThreadPool pool = new WorkStealingThreadPool(13);//TODO: put this here the right way
-
     	JsonParser jsonParser = new JsonParser(fileName);
 
-    	Warehouse warehouse = new Warehouse();//TODO: should this even be here?
+		WorkStealingThreadPool pool = new WorkStealingThreadPool(jsonParser.getThreads());//TODO: put this here the right way
+		pool.start();
+
+		Warehouse warehouse = new Warehouse();//TODO: should this even be here?
 
 		List<Tool> tools = jsonParser.getTools();
 		Map<Tool, Integer> toolsInventory = jsonParser.getToolsInventory();
@@ -67,7 +68,7 @@ public class Simulator {
 				task.getResult().whenResolved(() -> {
 
 					for(Product finishedProduct : task.getResult().get()){
-
+						System.out.println(finishedProduct.getName() + " id: " +finishedProduct.getFinalId());
 						finishedProducts.add(finishedProduct);
 					}
 
@@ -82,8 +83,15 @@ public class Simulator {
 			}
 		}
 
+		try {
+			pool.shutdown();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
-    	return finishedProducts;
+		System.out.println("done with start");
+
+		return finishedProducts;
 	}
 	
 	/**
@@ -98,7 +106,7 @@ public class Simulator {
 
 //		fileName = args[0];//TODO: find out where to get the file name from
 
-		fileName = "simulation.json";//TODO: remove this line
+		fileName = "simulation2.json";//TODO: remove this line
 
 		ConcurrentLinkedQueue<Product> finishedProducts = start();
 
