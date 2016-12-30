@@ -7,23 +7,66 @@ import bgu.spl.a2.sim.Product;
  */
 public class NextPrimeHammer implements Tool{
 
-    private final String type;
+	private final String type;
 
-    public NextPrimeHammer() {
-        this.type = "np-hammer";
-    }
+	public NextPrimeHammer() {
+		this.type = "np-hammer";
+	}
 
-    public String getType() {
+	public String getType() {
 
-        return type;
-    }
+		return type;
+	}
 
-    public long useOn(Product p) {
+	public long useOn(Product p) {
 
-        long ans = 0;
+		long id = p.getFinalId();
 
-        //TODO: implement nextPrime algorithm and use it on p
+		return findNextPrime(id);
+	}
 
-        return ans;
-    }
+	public long findNextPrime(long id) {
+
+	    long v = id;
+
+		if((id % 2) == 0){
+
+            v++;
+        }
+        else {
+
+            v+=2;
+        }
+
+		while (!isPrime(v)) {
+			v+=2;
+		}
+
+		return v;
+	}
+
+	private boolean isPrime(long value) {
+
+	    if(value < 2){
+
+	        return false;
+        }
+
+		if(value == 2){
+
+	        return true;
+        }
+
+		long sq = (long) Math.sqrt(value);
+
+		for (long i = 2; i <= sq; i++) {
+
+		    if (value % i == 0) {
+
+		        return false;
+			}
+		}
+
+		return true;
+	}
 }
