@@ -1,5 +1,5 @@
 {
-    "threads": 4,
+    "threads": 44,
     
     "tools": [
         {
@@ -93,6 +93,11 @@
                 "product": "yphone30-pro",
                 "qty": 2,
                 "startId": 50234560
+            },
+            {
+                "product": "yphone30-pro-plus",
+                "qty": 3,
+                "startId": 502345601
             }
 
         ],
@@ -106,6 +111,11 @@
                 "product": "yphone30-pro",
                 "qty": 3,
                 "startId": 560234560
+            },
+            {
+                "product": "yphone30-pro-plus",
+                "qty": 2,
+                "startId": 5602345601
             }
         ]
     ]
