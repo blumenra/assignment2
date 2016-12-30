@@ -40,7 +40,7 @@ public class UseTool extends Task<Long> {
 
             for(Product part : parts) {
 
-                sum += tool.useOn(part);
+                sum += Math.abs(tool.useOn(part));
             }
 
             warehouse.releaseTool(tool);

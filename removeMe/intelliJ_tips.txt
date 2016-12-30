@@ -101,3 +101,5 @@ Shift+F6: renames all usages of the selected object
 
 Ctrl+Alt+Shift+i -> "unused...": search for "unused" stuff in a customizable scope to safely remove from the specified scope.
                     can also be used to "Inspect" anything else in the code such as System.out.
+
+Ctrl+Alt+6: Hide coverage data from the project view
