@@ -28,13 +28,7 @@ public class ProcessorTest {
         int[] ints = {5, 2};
 
         MergeSort task = new MergeSort(ints);
-        System.out.println("Before submit");
         pool.submit(task);
-
-
-
-
-//        Thread.sleep(500);
     }
 
     @Test

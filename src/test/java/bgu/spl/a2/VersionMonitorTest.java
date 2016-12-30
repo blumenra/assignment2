@@ -38,9 +38,8 @@ public class VersionMonitorTest {
 
                 try {
                     vm.await(0);
-
-                } catch (Exception e) {
-                    System.out.println(e);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         };
