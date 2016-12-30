@@ -8,9 +8,6 @@ import bgu.spl.a2.sim.conf.ManufactoringPlan;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by brukes on 12/29/16.
- */
 public class Manufacture extends Task<Product> {
 
     //    Fields:
@@ -53,17 +50,20 @@ public class Manufacture extends Task<Product> {
 
                 List<Product> finishedParts = new ArrayList<>();
                 List<Task<Long>> toolTasks = new ArrayList<>();
+                Product product = new Product(this.startId, this.productName);
 
                 for (Task<Product> task : tasks) {
 
-                    finishedParts.add(task.getResult().get());
+                    Product part = task.getResult().get();
+
+                    product.addPart(part);
+                    finishedParts.add(part);
                 }
 
                 String[] tools = plan.getTools();
 
                 if(tools.length == 0){
 
-                    Product product = new Product(this.startId, this.productName);
                     product.setFinalId(this.startId);
 
                     complete(product);
@@ -87,10 +87,9 @@ public class Manufacture extends Task<Product> {
                             sum += toolTask.getResult().get();
                         }
 
-                        Product product = new Product(this.startId, this.productName);
                         product.setFinalId(sum);
 
-                        System.out.println("Product: " + product.getName() + ", Id: " + product.getStartId());// TODO:REMOVE ME
+//                        System.out.println("Product: " + product.getName() + ", startId: " + product.getStartId() + ", finalId: "+ product.getFinalId());// TODO:REMOVE ME
                         complete(product);
                     });
                 }
