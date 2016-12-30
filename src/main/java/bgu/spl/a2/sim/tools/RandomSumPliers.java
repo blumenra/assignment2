@@ -9,6 +9,10 @@ public class RandomSumPliers implements Tool {
 
     private final String type;
 
+    public RandomSumPliers() {
+        this.type = "RandomSumPliers";
+    }
+
     public String getType() {
 
         return type;
@@ -16,7 +20,7 @@ public class RandomSumPliers implements Tool {
 
     public long useOn(Product p) {
 
-        long ans;
+        long ans = 0;
 
         //TODO: implement randomSum algorithm and use it on p
 

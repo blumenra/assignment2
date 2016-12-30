@@ -11,14 +11,14 @@ public class ManufactoringPlan {
 	* @param tools - array of strings describing the plans tools names
 	*/
 	private final String product;
-	private String[] parts;
 	private String[] tools;
+	private String[] parts;
 
-    public ManufactoringPlan(String product, String[] parts, String[] tools){
+    public ManufactoringPlan(String product, String[] tools, String[] parts){
 
     	this.product = product;
-    	this.parts = parts;
-    	this.tools = tools;
+		this.tools = tools;
+		this.parts = parts;
 	}
 
 	/**
