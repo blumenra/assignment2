@@ -78,11 +78,14 @@ public class WorkStealingThreadPool {
      */
     public void shutdown() throws InterruptedException {
 
-//        processors.shutdown();
         for(Thread t : tProcessors) {
             t.interrupt();
         }
         latch.await();
+
+
+        // TODO: REMOVE THE FOLLOWING
+        Thread.currentThread().sleep(200);
         for(Thread t : tProcessors) {
             System.out.println(t.getName() + " is alive: " + t.isAlive());
         }
