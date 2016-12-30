@@ -71,12 +71,13 @@ public class Simulator {
 						System.out.println(finishedProduct.getName() + " id: " +finishedProduct.getFinalId());
 						finishedProducts.add(finishedProduct);
 					}
+                    latch.countDown();
+                });
+            }
 
-					latch.countDown();
-				});
-			}
+            System.out.println("next wave");
 
-			try {
+            try {
 				latch.await();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -106,7 +107,7 @@ public class Simulator {
 
 //		fileName = args[0];//TODO: find out where to get the file name from
 
-		fileName = "simulation2.json";//TODO: remove this line
+		fileName = "simulation.json";//TODO: remove this line
 
 		ConcurrentLinkedQueue<Product> finishedProducts = start();
 

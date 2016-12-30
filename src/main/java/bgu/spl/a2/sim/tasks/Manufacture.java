@@ -59,28 +59,39 @@ public class Manufacture extends Task<Product> {
                     finishedParts.add(task.getResult().get());
                 }
 
-                for (String tool : plan.getTools()) {
+                String[] tools = plan.getTools();
 
-                    UseTool task = new UseTool(tool, finishedParts, warehouse);
-                    toolTasks.add(task);
-                    spawn(task);
-
-                }
-
-                whenResolved(toolTasks, () -> {
-
-                    long sum = this.startId;
-
-                    for (Task<Long> toolTask : toolTasks) {
-
-                        sum += toolTask.getResult().get();
-                    }
+                if(tools.length == 0){
 
                     Product product = new Product(this.startId, this.productName);
-                    product.setFinalId(sum);
-                    complete(product);
-                });
+                    product.setFinalId(this.startId);
 
+                    complete(product);
+                }
+                else {
+
+                    for (String tool : tools) {
+
+                        UseTool task = new UseTool(tool, finishedParts, warehouse);
+                        toolTasks.add(task);
+                        spawn(task);
+
+                    }
+
+                    whenResolved(toolTasks, () -> {
+
+                        long sum = this.startId;
+
+                        for (Task<Long> toolTask : toolTasks) {
+
+                            sum += toolTask.getResult().get();
+                        }
+
+                        Product product = new Product(this.startId, this.productName);
+                        product.setFinalId(sum);
+                        complete(product);
+                    });
+                }
             });
         }
     }
