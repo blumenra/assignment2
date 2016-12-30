@@ -32,45 +32,56 @@ public class Manufacture extends Task<Product> {
         ManufactoringPlan plan = warehouse.getPlan(productName);
         List<Task<Product>> tasks = new ArrayList<>();
 
-        for (String part : plan.getParts()) {
+        String[] parts = plan.getParts();
 
-            Manufacture task = new Manufacture(part, startId + 1, warehouse);
-            tasks.add(task);
-            spawn(task);
+        if(parts.length == 0){
+
+            Product product = new Product(this.startId, this.productName);
+            product.setFinalId(this.startId);
+
+            complete(product);
         }
+        else {
+            for (String part : parts) {
 
-        whenResolved(tasks, () -> {
-
-            List<Product> finishedParts = new ArrayList<>();
-            List<Task<Long>> toolTasks = new ArrayList<>();
-
-            for (Task<Product> task : tasks) {
-
-                finishedParts.add(task.getResult().get());
-            }
-
-            for (String tool : plan.getTools()) {
-
-                UseTool task = new UseTool(tool, finishedParts, warehouse);
-                toolTasks.add(task);
+                Manufacture task = new Manufacture(part, startId + 1, warehouse);
+                tasks.add(task);
                 spawn(task);
-
             }
 
-            whenResolved(toolTasks, () -> {
+            whenResolved(tasks, () -> {
 
-                long sum = this.startId;
+                List<Product> finishedParts = new ArrayList<>();
+                List<Task<Long>> toolTasks = new ArrayList<>();
 
-                for (Task<Long> toolTask : toolTasks) {
+                for (Task<Product> task : tasks) {
 
-                    sum += toolTask.getResult().get();
+                    finishedParts.add(task.getResult().get());
                 }
 
-                Product product = new Product(this.startId, this.productName);
-                product.setFinalId(sum);
-                complete(product);
-            });
+                for (String tool : plan.getTools()) {
 
-        });
+                    UseTool task = new UseTool(tool, finishedParts, warehouse);
+                    toolTasks.add(task);
+                    spawn(task);
+
+                }
+
+                whenResolved(toolTasks, () -> {
+
+                    long sum = this.startId;
+
+                    for (Task<Long> toolTask : toolTasks) {
+
+                        sum += toolTask.getResult().get();
+                    }
+
+                    Product product = new Product(this.startId, this.productName);
+                    product.setFinalId(sum);
+                    complete(product);
+                });
+
+            });
+        }
     }
 }
