@@ -93,13 +93,9 @@ public abstract class Task<R> {
 
         Runnable callbackForChild = () -> {
 
-            synchronized(parentVM){ //TODO: MAYBE NOT NEEDED!
+            if(parentVM.decrementAndGet() == 0) {
 
-                if(parentVM.decrementAndGet() == 0) {
-
-                    // callback.run();//TODO: REMOVE ME IF NECESSARY
-                    spawn(parentTask);
-                }
+                spawn(parentTask);
             }
         };
 
