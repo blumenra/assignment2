@@ -17,7 +17,7 @@ public class ManufactoringPlan {
     public ManufactoringPlan(String product, String[] tools, String[] parts){
 
     	this.product = product;
-    	this.tools = tools;
+		this.tools = tools;
 		this.parts = parts;
 	}
 

@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Created by brukes on 12/29/16.
  */
-public class Wave extends Task<Queue<Product>> {
+public class WaveOrder extends Task<Queue<Product>> {
 
 //    Fields:
     private final String product;
@@ -21,7 +21,7 @@ public class Wave extends Task<Queue<Product>> {
     private final Warehouse warehouse;
 
 //    Methods:
-    public Wave(String product, int qty, long startId, Warehouse warehouse) {
+    public WaveOrder(String product, int qty, long startId, Warehouse warehouse) {
         this.product = product;
         this.qty = qty;
         this.startId = startId;

@@ -9,6 +9,11 @@ public class GcdScrewDriver implements Tool {
 
     private final String type;
 
+    public GcdScrewDriver() {
+
+        this.type = "GcdScrewDriver";
+    }
+
     public String getType() {
 
         return type;
@@ -16,7 +21,7 @@ public class GcdScrewDriver implements Tool {
 
     public long useOn(Product p) {
 
-        long ans;
+        long ans = 0;
 
         //TODO: implement gcd algorithm add use it on p
 

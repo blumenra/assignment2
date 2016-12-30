@@ -1,7 +1,8 @@
 /*TODO:
-		implement JSON
+		--implement JSON
 		implement the Simulator
-		create tool classes
+		--create tool classes
+		create output file
 		check everything in Terminal with Maven
 		handle all the TODOs in the code
 		remove all souts (has a keyboard shortcut in the tips)
