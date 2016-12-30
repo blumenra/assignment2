@@ -89,6 +89,8 @@ public class Manufacture extends Task<Product> {
 
                         Product product = new Product(this.startId, this.productName);
                         product.setFinalId(sum);
+
+                        System.out.println("Product: " + product.getName() + ", Id: " + product.getStartId());// TODO:REMOVE ME
                         complete(product);
                     });
                 }

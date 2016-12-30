@@ -10,10 +10,7 @@ import bgu.spl.a2.sim.conf.ManufactoringPlan;
 import bgu.spl.a2.sim.tasks.WaveOrder;
 import bgu.spl.a2.sim.tools.Tool;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -125,6 +122,21 @@ public class Simulator {
 			e.printStackTrace();
 		}
 
+
+
+		//TODO: REMOVE ALL THE FOLLOWING
+		try {
+			ObjectInputStream in = new ObjectInputStream(new FileInputStream("result.ser"));
+			System.out.println("***************************");
+			Object obj = in.readObject();
+//			System.out.println(obj);
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 
 	}
 }
