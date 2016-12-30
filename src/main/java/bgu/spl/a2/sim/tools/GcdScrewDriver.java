@@ -11,7 +11,7 @@ public class GcdScrewDriver implements Tool {
 
     public GcdScrewDriver() {
 
-        this.type = "GcdScrewDriver";
+        this.type = "gs-driver";
     }
 
     public String getType() {

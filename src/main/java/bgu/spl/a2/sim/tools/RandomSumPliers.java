@@ -10,7 +10,7 @@ public class RandomSumPliers implements Tool {
     private final String type;
 
     public RandomSumPliers() {
-        this.type = "RandomSumPliers";
+        this.type = "rs-pliers";
     }
 
     public String getType() {

@@ -10,7 +10,7 @@ public class NextPrimeHammer implements Tool{
     private final String type;
 
     public NextPrimeHammer() {
-        this.type = "NextPrimeHammer";
+        this.type = "np-hammer";
     }
 
     public String getType() {
