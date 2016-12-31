@@ -4,9 +4,9 @@
 		--create tool classes
 		--create output file
 		check everything in Terminal with Maven
-		handle all the TODOs in the code
-		remove all souts (has a keyboard shortcut in the tips)
-		remove unused imports, variables any anything else unused in the code (has a keyboard shortcut in the tips)
+		--handle all the TODOs in the code
+		--remove all souts (has a keyboard shortcut in the tips)
+		--remove unused imports, variables any anything else unused in the code (has a keyboard shortcut in the tips)
 		--Fixe the part id's, they dont match the output file and we dont know why...
 		--implement the pool method od simulator
 		--create classes for all our tasks
