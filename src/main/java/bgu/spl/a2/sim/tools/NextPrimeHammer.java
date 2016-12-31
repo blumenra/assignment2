@@ -3,7 +3,8 @@ package bgu.spl.a2.sim.tools;
 import bgu.spl.a2.sim.Product;
 
 /**
- * Created by blumenra on 12/29/16.
+ * This class implements the Tool interface and represents the NextPrimeHammer tool.
+ * It implements the useOn methods which receives a product and returns a long number.
  */
 public class NextPrimeHammer implements Tool{
 
@@ -18,6 +19,13 @@ public class NextPrimeHammer implements Tool{
 		return type;
 	}
 
+	/**
+	 * This method finds the next prime number after the finalId of the given product
+	 * and returns it.
+	 *
+	 * @param p - Product to use tool on
+	 * @return a number of type long which is the next prime number after the finalId of the given product
+	 */
 	public long useOn(Product p) {
 
 		long id = p.getFinalId();
@@ -25,7 +33,7 @@ public class NextPrimeHammer implements Tool{
 		return findNextPrime(id);
 	}
 
-	public long findNextPrime(long id) {
+	private long findNextPrime(long id) {
 
 	    long v = id;
 

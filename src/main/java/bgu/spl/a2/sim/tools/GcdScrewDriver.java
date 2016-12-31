@@ -5,7 +5,8 @@ import bgu.spl.a2.sim.Product;
 import java.math.BigInteger;
 
 /**
- * Created by blumenra on 12/29/16.
+ * This class implements the Tool interface and represents the GcdScrewDriver tool.
+ * It implements the useOn methods which receives a product and returns a long number.
  */
 public class GcdScrewDriver implements Tool {
 
@@ -21,6 +22,14 @@ public class GcdScrewDriver implements Tool {
 		return type;
 	}
 
+	/**
+	 * This method finds the GCD of the product's finalId
+	 * and the reversed finalId and returns it.
+	 *
+	 * @param p - Product to use tool on
+	 * @return a number of type long which is the GCD of the product's finalId
+	 * and the reversed finalId
+	 */
 	public long useOn(Product p) {
 
         BigInteger b1 = BigInteger.valueOf(p.getFinalId());
@@ -30,6 +39,11 @@ public class GcdScrewDriver implements Tool {
 		return ans;
 	}
 
+	/**
+	 * This method reverses the n and returns the result
+	 * @param n
+	 * @return the reversed representation of n
+	 */
 	private long reverse(long n){
 
 	    long reverse = 0;

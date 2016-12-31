@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by blumenra on 12/29/16.
+ * This class parses the given json file and holds them as his fields.
+ * The parsing is done in the constructor with Gson.
  */
 public class JsonParser {
 
@@ -55,6 +56,7 @@ public class JsonParser {
     public List<List<ProductOrder>> getWaves() {
         return waves;
     }
+
 
     private JSim readFile(String fileName){
 
