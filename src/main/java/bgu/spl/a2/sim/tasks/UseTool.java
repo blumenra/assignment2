@@ -9,7 +9,9 @@ import bgu.spl.a2.sim.tools.Tool;
 import java.util.List;
 
 /**
- * Created by brukes on 12/29/16.
+ * The class represents a task which tries to acquire his tool
+ * from the warehouse. if he succeeds, he uses it on each part of his product.
+ * Once he finishes that, he completes.
  */
 public class UseTool extends Task<Long> {
 
@@ -32,6 +34,7 @@ public class UseTool extends Task<Long> {
 
         this.deferredTool = warehouse.acquireTool(toolName);
 
+        // When the tool is available, use the tool on each part and sum them
         whenToolIsAvaiable(this.deferredTool, () -> {
 
             Long sum = new Long(0);
@@ -50,6 +53,13 @@ public class UseTool extends Task<Long> {
 
     }
 
+    /**
+     * This methods receives {@link #deferredTool} which will hold  as the code to execute
+     * once the tool is available in the warehouse. {@link #deferredTool} will be resolved by the warehouse.
+     *
+     * @param deferredTool
+     * @param callback
+     */
     private void whenToolIsAvaiable(Deferred<Tool> deferredTool, Runnable callback) {
 
         synchronized (deferredTool) {

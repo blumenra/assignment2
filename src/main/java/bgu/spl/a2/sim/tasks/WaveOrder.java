@@ -10,7 +10,8 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Created by brukes on 12/29/16.
+ * This class represents a task which spawns new manufacture tasks
+ * as many as the qty he receives as a parameter.
  */
 public class WaveOrder extends Task<Queue<Product>> {
 
@@ -40,6 +41,7 @@ public class WaveOrder extends Task<Queue<Product>> {
             spawn(task);
         }
 
+        // When all tasks are completed, add them to a queue and complete with it
         whenResolved(tasks, () -> {
 
             Queue<Product> finishedProducts = new ConcurrentLinkedQueue<>();

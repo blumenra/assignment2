@@ -72,6 +72,12 @@ public class Product implements java.io.Serializable {
     	this.finalId = finalId;
 	}
 
+	/**
+	 * Prints a tree of products which every sub-tree represents a product and its parts.
+	 * Every node which represents a product appears as a name and a finalId.
+	 *
+	 * @param indent is for the convenient appearance of the tree
+	 */
 	public void printWithParts(String indent){
 
 		System.out.println(indent + "Name: " + this.getName() + ", FinalID: " + this.getFinalId() + " {");
