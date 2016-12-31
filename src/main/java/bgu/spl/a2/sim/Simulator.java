@@ -63,14 +63,12 @@ public class Simulator {
 				task.getResult().whenResolved(() -> {
 
 					for(Product finishedProduct : task.getResult().get()){
-						System.out.println(finishedProduct.getName() + " id: " +finishedProduct.getFinalId());
+
 						finishedProducts.add(finishedProduct);
 					}
                     latch.countDown();
                 });
             }
-
-            System.out.println("next wave");
 
             try {
 				latch.await();
@@ -84,8 +82,6 @@ public class Simulator {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-		System.out.println("done with start");
 
 		return finishedProducts;
 	}
