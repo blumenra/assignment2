@@ -98,6 +98,10 @@ public class WorkStealingThreadPool {
 
     }
 
+    /**
+     * The following are getters and are self explanatory
+     *
+     */
     /*package*/ ArrayList<ConcurrentLinkedDeque<Task<?>>> getDeques() {
 
         return dequesOfProcessors;

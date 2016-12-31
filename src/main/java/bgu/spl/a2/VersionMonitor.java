@@ -27,16 +27,26 @@ public class VersionMonitor {
         return version.get();
     }
 
+    /**
+     * This method is synchronized so that a thread doesn't increment the version while
+     * another thread is inside the await method to wait on that same version.
+     * This method increments the version parameter.
+     */
     public synchronized void inc() {
 
         this.version.addAndGet(1);
         this.notifyAll();
     }
 
+    /**
+     * This method is synchronized so that a thread doesn't increment the version while
+     * another thread is inside the await method to wait on that same version.
+     * This method waits on a specific version.
+     */
     public synchronized void await(int version) throws InterruptedException {
 
-            while(version == this.version.get()){
-                this.wait();
-            }
+        while(version == this.version.get()){
+            this.wait();
+        }
     }
 }

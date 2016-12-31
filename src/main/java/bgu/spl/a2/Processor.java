@@ -103,6 +103,11 @@ public class Processor implements Runnable {
         return !pool.getDeque(id).isEmpty();
     }
 
+    /**
+     * This method adds a task to this processor's deque in the WorkStealingThreadPool and
+     * increments the pool's version monitor.
+     * @param task
+     */
     /*package*/ void addToMyDeque(Task<?> task) {
 
         pool.getDeque(id).addFirst(task);

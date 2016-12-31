@@ -1,8 +1,6 @@
 package bgu.spl.a2;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * this class represents a deferred result i.e., an object that eventually will

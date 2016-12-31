@@ -32,31 +32,24 @@ public class Simulator {
 
 		pool.start();
 
-		Warehouse warehouse = new Warehouse();
-
-		List<Tool> tools = jsonParser.getTools();
-		Map<Tool, Integer> toolsInventory = jsonParser.getToolsInventory();
-		List<ManufactoringPlan> plans = jsonParser.getPlans();
-
-		for(Tool tool : tools){
-
-			warehouse.addTool(tool, toolsInventory.get(tool));
-		}
-
-		for(ManufactoringPlan plan : plans){
-
-			warehouse.addPlan(plan);
-		}
+		Warehouse warehouse = initializeWarehouse();
 
     	List<List<ProductOrder>> waves = jsonParser.getWaves();
 
 		ConcurrentLinkedQueue<Product> finishedProducts = new ConcurrentLinkedQueue<Product>();
 
+		/**
+		 * this for loop creates waves and waits for each wave to complete before creating
+		 * the next wave
+		 */
     	for(List<ProductOrder> wave : waves){
 
     		CountDownLatch latch = new CountDownLatch(wave.size());
 
-    		for(ProductOrder order : wave){
+			/**
+			 * this for loop creates the tasks required to complete the current wave.
+			 */
+			for(ProductOrder order : wave){
 
 				WaveOrder task = new WaveOrder(order.getProduct(), order.getQty(), order.getStartId(), warehouse);
 				pool.submit(task);
@@ -66,6 +59,7 @@ public class Simulator {
 
 						finishedProducts.add(finishedProduct);
 					}
+
                     latch.countDown();
                 });
             }
@@ -85,7 +79,29 @@ public class Simulator {
 
 		return finishedProducts;
 	}
-	
+
+	private static Warehouse initializeWarehouse() {
+
+		Warehouse warehouse = new Warehouse();
+
+		List<Tool> tools = jsonParser.getTools();
+		Map<Tool, Integer> toolsInventory = jsonParser.getToolsInventory();
+		List<ManufactoringPlan> plans = jsonParser.getPlans();
+
+
+		for(Tool tool : tools){
+
+			warehouse.addTool(tool, toolsInventory.get(tool));
+		}
+
+		for(ManufactoringPlan plan : plans){
+
+			warehouse.addPlan(plan);
+		}
+
+		return warehouse;
+	}
+
 	/**
 	* attach a WorkStealingThreadPool to the Simulator, this WorkStealingThreadPool will be used to run the simulation
 	* @param myWorkStealingThreadPool - the WorkStealingThreadPool which will be used by the simulator
