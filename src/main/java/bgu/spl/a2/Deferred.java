@@ -20,7 +20,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class Deferred<T> {
 
-//    private List<Runnable> callbacks = new CopyOnWriteArrayList<>();
     private ArrayList<Runnable> callbacks = new ArrayList<>();
     private T result = null;
 
@@ -74,7 +73,6 @@ public class Deferred<T> {
 
         this.result = value;
 
-        // not sure if it is better to run over the list and execute each callback, or to do it as follows...
         while(!callbacks.isEmpty()){
             Runnable tmpCallback = callbacks.get(0);
             callbacks.remove(0);

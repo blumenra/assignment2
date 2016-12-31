@@ -71,8 +71,6 @@ public class Processor implements Runnable {
             }
         }
 
-//        System.out.println("interrupted out of run: " + id);//TODO:REMOVE ME
-
         pool.getLatch().countDown();
     }
 
@@ -91,7 +89,6 @@ public class Processor implements Runnable {
                 tempTask = pool.getDeque(i).pollLast();
                 if(tempTask != null) {
 
-                    // pool.getDeque(id).addFirst(tempTask); //maybe its better with this line instead of the next but could not justify it...
                     addToMyDeque(tempTask);
                 }
             }
@@ -106,7 +103,6 @@ public class Processor implements Runnable {
         return !pool.getDeque(id).isEmpty();
     }
 
-    //This method is package protected so it's ok to be defined nanabanana
     /*package*/ void addToMyDeque(Task<?> task) {
 
         pool.getDeque(id).addFirst(task);

@@ -89,7 +89,6 @@ public class Manufacture extends Task<Product> {
 
                         product.setFinalId(sum);
 
-//                        System.out.println("Product: " + product.getName() + ", startId: " + product.getStartId() + ", finalId: "+ product.getFinalId());// TODO:REMOVE ME
                         complete(product);
                     });
                 }

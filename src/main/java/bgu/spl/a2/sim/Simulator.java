@@ -30,10 +30,9 @@ public class Simulator {
 	*/
     public static ConcurrentLinkedQueue<Product> start(){
 
-		//TODO: put this here the right way
 		pool.start();
 
-		Warehouse warehouse = new Warehouse();//TODO: should this even be here?
+		Warehouse warehouse = new Warehouse();
 
 		List<Tool> tools = jsonParser.getTools();
 		Map<Tool, Integer> toolsInventory = jsonParser.getToolsInventory();
@@ -120,12 +119,6 @@ public class Simulator {
 
 		ConcurrentLinkedQueue<Product> finishedProducts = start();
 
-		//TODO: remove {
-		for(Product product: finishedProducts){
-			System.out.println("");
-			product.printWithParts("");
-		}
-		//TODO: remove }
 
 		FileOutputStream fout = null;
 		try {
@@ -138,22 +131,6 @@ public class Simulator {
 			oos.writeObject(finishedProducts);
 			oos.close();
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-
-
-		//TODO: REMOVE ALL THE FOLLOWING
-		try {
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream("result.ser"));
-			System.out.println("***************************");
-			Object obj = in.readObject();
-			System.out.println(obj);
-
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 

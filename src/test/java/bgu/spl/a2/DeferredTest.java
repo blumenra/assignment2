@@ -15,7 +15,7 @@ public class DeferredTest {
     @Test
     public void get() throws Exception {
 
-        Deferred<int[]> deferred = new Deferred<int[]>();
+        Deferred<int[]> deferred = new Deferred<>();
         int[] ints = {2, 1};
 
         deferred.resolve(ints);
@@ -28,7 +28,7 @@ public class DeferredTest {
     @Test
     public void isResolved() throws Exception {
 
-        Deferred<int[]> deferred = new Deferred<int[]>();
+        Deferred<int[]> deferred = new Deferred<>();
         int[] ints = new int[10];
 
         assertFalse("isResolved should be false before resolve", deferred.isResolved());
@@ -43,7 +43,7 @@ public class DeferredTest {
     public void resolve() throws Exception {
 
 
-        Deferred<int[]> deferred = new Deferred<int[]>();
+        Deferred<int[]> deferred = new Deferred<>();
         int[] ints = new int[10];
         Runnable callback = () -> System.out.println("deferred's callback (deferred resolve test)");
 
@@ -71,18 +71,12 @@ public class DeferredTest {
 
         assertNotNull(fields[1].get(deferred));
         assertEquals("When List of callbacks was NOT empty", 0, tmpCallbacks.size());
-
-
-
-
-
-
     }
 
     @Test
     public void whenResolved() throws Exception {
 
-        Deferred<int[]> deferred = new Deferred<int[]>();
+        Deferred<int[]> deferred = new Deferred<>();
 
         Runnable callback = () -> System.out.println("deferred's callback");
 

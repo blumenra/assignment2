@@ -8,7 +8,6 @@ package bgu.spl.a2.test;
 import bgu.spl.a2.Task;
 import bgu.spl.a2.WorkStealingThreadPool;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,8 +23,7 @@ public class MergeSort extends Task<int[]> {
     }
 
     @Override
-    protected void start() { //TODO: change back to this original line instead of the one below!!!!!
-//    public void start() {//TODO: REMOVE MEEEEEEEEEEEEEEEEEEE
+    protected void start() {
 
         if(array.length ==1){
 
@@ -52,19 +50,7 @@ public class MergeSort extends Task<int[]> {
 
                 complete(mergedArray);
             });
-
         }
-//
-////        MergeSort task3 = new MergeSort(ints);
-////        MergeSort task4 = new MergeSort(ints);
-//
-//        spawn(task2);
-
-
-//        System.out.println(Arrays.toString(arrays[0]));
-//        System.out.println(Arrays.toString(arrays[1]));
-//        System.out.println(Arrays.toString(merge(arrays[0], arrays[1])));
-
     }
 
     private int[] merge(int[] arr1, int[] arr2) {
@@ -150,14 +136,8 @@ public class MergeSort extends Task<int[]> {
 
     public static void main(String[] args) throws InterruptedException {
 
-        // TODO: REMOVE FROM HERE
-        long  start = System.currentTimeMillis();
-        WorkStealingThreadPool pool = new WorkStealingThreadPool(13);
-        int n = 1000000;
-        // TODO: REMOVE TO HERE AND UNCOMMENT THE TWO LINES BELOW
-
-//        WorkStealingThreadPool pool = new WorkStealingThreadPool(4);
-//        int n = 1000000; //you may check on different number of elements if you like
+        WorkStealingThreadPool pool = new WorkStealingThreadPool(4);
+        int n = 1000000; //you may check on different number of elements if you like
 
         int[] array = new Random().ints(n).toArray();
 
@@ -167,36 +147,15 @@ public class MergeSort extends Task<int[]> {
         pool.start();
         pool.submit(task);
         task.getResult().whenResolved(() -> {
-            //warning - a large print!! - you can remove this line if you wish
-//            System.out.println(Arrays.toString(task.getResult().get()));//TODO: UNCOMMENT IT!!!!
 
-            ////////////////TODO: REMOVE FROM HERE
+            System.out.println(Arrays.toString(task.getResult().get()));
 
-            int[] ans = task.getResult().get();
-
-            System.out.println("size of final merged array: " + ans.length);
-
-            boolean isSorted = true;
-
-            for(int i = 1; i<ans.length; i++) {
-                if(ans[i-1] > ans[i]){
-                    isSorted = false;
-                }
-            }
-
-            System.out.println("sorted: " + isSorted);
-
-            long  time = System.currentTimeMillis() - start;
-            System.out.println("Execution time(mills): " + time);
-            Toolkit.getDefaultToolkit().beep();
-            ////////////////TODO: REMOVE TO HERE
             l.countDown();
         });
 
         l.await();
         pool.shutdown();
 
-        System.out.println("End of main");// TODO: REMOVE MEEEEEEEEEE
     }
 
 }

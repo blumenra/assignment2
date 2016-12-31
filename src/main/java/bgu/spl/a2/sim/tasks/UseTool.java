@@ -52,7 +52,6 @@ public class UseTool extends Task<Long> {
 
     private void whenToolIsAvaiable(Deferred<Tool> deferredTool, Runnable callback) {
 
-        //TODO: needs to be decided whether if the callback will be executed immediately or will be spawned
         synchronized (deferredTool) {
 
             if(deferredTool.isResolved()) {

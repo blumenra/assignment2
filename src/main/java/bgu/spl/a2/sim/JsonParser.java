@@ -19,7 +19,7 @@ import java.util.Map;
  * Created by blumenra on 12/29/16.
  */
 public class JsonParser {
-    // TODO: make all of these final after testing
+
     private int threads;
     private List<Tool> tools;
     private Map<Tool, Integer> toolsInventory;

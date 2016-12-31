@@ -19,7 +19,6 @@ import java.util.concurrent.Executors;
 public class WorkStealingThreadPool {
 
     private ArrayList<ConcurrentLinkedDeque<Task<?>>> dequesOfProcessors;
-//    private ExecutorService processors = null;
     private ArrayList<Thread> tProcessors;
     private VersionMonitor vm;
     private CountDownLatch latch;
@@ -38,16 +37,15 @@ public class WorkStealingThreadPool {
      */
     public WorkStealingThreadPool(int nthreads) {
 
-        this.dequesOfProcessors = new ArrayList<ConcurrentLinkedDeque<Task<?>>>();
+        this.dequesOfProcessors = new ArrayList<>();
 
         for(int i = 0; i < nthreads; i++){
 
-            this.dequesOfProcessors.add(new ConcurrentLinkedDeque<Task<?>>());
+            this.dequesOfProcessors.add(new ConcurrentLinkedDeque<>());
         }
 
         vm = new VersionMonitor();
         tProcessors = new ArrayList<>();
-//        processors = Executors.newFixedThreadPool(nthreads);
 
         this.latch = new CountDownLatch(dequesOfProcessors.size());
     }
@@ -81,14 +79,8 @@ public class WorkStealingThreadPool {
         for(Thread t : tProcessors) {
             t.interrupt();
         }
+
         latch.await();
-
-
-        // TODO: REMOVE THE FOLLOWING
-        Thread.currentThread().sleep(200);
-        for(Thread t : tProcessors) {
-            System.out.println(t.getName() + " is alive: " + t.isAlive());
-        }
     }
 
     /**
@@ -97,12 +89,11 @@ public class WorkStealingThreadPool {
     public void start() {
 
         for(int i = 0; i < dequesOfProcessors.size(); i++) {
+
             Processor processor = new Processor(i, this);
             Thread thread = new Thread(processor);
             thread.start();
             tProcessors.add(thread);
-
-//            processors.submit(t);
         }
 
     }

@@ -31,10 +31,6 @@ public class ProcessorTest {
         System.out.println("Before submit");
         pool.submit(task);
 
-
-
-
-//        Thread.sleep(500);
     }
 
     @Test
